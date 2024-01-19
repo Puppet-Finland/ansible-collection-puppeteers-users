@@ -16,6 +16,16 @@
     shell: "{{ item.shell | default('/bin/bash') }}"
   loop: "{{ puppeteers_users_localusers_users }}"
 
+- name: Ensure passwordless sudo for user
+  ansible.builtin.copy:
+    content: "{{ item.name }} ALL=(ALL) NOPASSWD: ALL\n"
+    dest: "/etc/sudoers.d/99-{{ item.name }}"
+    owner: root
+    group: root
+    mode: '0660'
+  loop: "{{ puppeteers_users_localusers_users }}"
+  when: item.nopasswd | default(false)
+
 - name: Ensure SSH authorized_keys
   ansible.builtin.authorized_key:
     user: "{{ item.name }}"
