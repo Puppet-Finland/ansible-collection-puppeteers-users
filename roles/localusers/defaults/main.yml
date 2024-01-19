@@ -1,4 +1,5 @@
 ---
+puppeteers_users_localusers_shell: '/bin/bash'
 puppeteers_users_localusers_admingroup: |-
     {{
         {

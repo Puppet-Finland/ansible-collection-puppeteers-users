@@ -13,7 +13,7 @@
     local: true
     append: false
     groups: "{{ puppeteers_users_localusers_admingroup }}"
-    shell: "{{ item.shell | default('/bin/bash') }}"
+    shell: "{{ item.shell | default(puppeteers_users_localusers_shell) }}"
   loop: "{{ puppeteers_users_localusers_users }}"
 
 - name: Ensure passwordless sudo for user

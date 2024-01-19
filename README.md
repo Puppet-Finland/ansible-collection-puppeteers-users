@@ -32,13 +32,14 @@ puppeteers_users_localusers_users:
     authorized_key: '<ssh-key>'
 ```
 
-To create a user without a password:
+To create a user without a password and passwordless sudo:
 
 ```
 puppeteers_users_localusers:
   - name: devops
     password: '!'
     authorized_key: '<ssh-key>'
+    nopasswd: true
 ```
 
 To change the default shell (/bin/bash) for a user:
@@ -48,6 +49,12 @@ To change the default shell (/bin/bash) for a user:
     password: '<password-hash>'
     authorized_key: '<ssh-key>'
     shell: '/bin/zsh'
+```
+
+To change the default shell for all users:
+
+```
+puppeteers_users_localusers_shell: '/bin/zsh'
 ```
 
 To override the default admin group (e.g. sudo or wheel) use:
