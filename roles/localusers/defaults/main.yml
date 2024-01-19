@@ -1,0 +1,8 @@
+---
+puppeteers_users_localusers_admingroup: |-
+    {{
+        {
+            'RedHat': 'wheel',
+            'Debian': 'sudo'
+        }[ansible_facts.os_family]
+    }}

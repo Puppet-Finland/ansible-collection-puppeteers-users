@@ -1,0 +1,24 @@
+---
+- name: Ensure that libuser is present
+  ansible.builtin.package:
+    name: libuser
+    state: present
+  when: ansible_facts['os_family'] == 'Debian'
+
+- name: Ensure local users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
+    state: present
+    local: true
+    append: false
+    groups: "{{ puppeteers_users_localusers_admingroup }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+  loop: "{{ puppeteers_users_localusers_users }}"
+
+- name: Ensure SSH authorized_keys
+  ansible.builtin.authorized_key:
+    user: "{{ item.name }}"
+    state: present
+    key: "{{ item.authorized_key }}"
+  loop: "{{ puppeteers_users_localusers_users }}"
