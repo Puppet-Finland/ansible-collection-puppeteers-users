@@ -1,0 +1,37 @@
+---
+- name: Validate parameters
+  ansible.builtin.assert:
+    that:
+      - puppeteers_users_unprivileged_user_state is match ('^(present|absent)$')
+      - puppeteers_users_unprivileged_user_name is string
+      - puppeteers_users_unprivileged_user_comment is string
+      - puppeteers_users_unprivileged_user_home is string
+      - puppeteers_users_unprivileged_user_ssh_authorized_key is string
+
+- name: Create unprivileged user
+  ansible.builtin.user:
+    state: "{{ puppeteers_users_unprivileged_user_state }}"
+    name: "{{ puppeteers_users_unprivileged_user_name }}"
+    comment: "{{ puppeteers_users_unprivileged_user_comment }}"
+    create_home: true
+
+- name: Create .ssh directory for unprivileged user
+  ansible.builtin.file:
+    state: directory
+    path: "{{ puppeteers_users_unprivileged_user_home }}/.ssh"
+    owner: "{{ puppeteers_users_unprivileged_user_name }}"
+    group: "{{ puppeteers_users_unprivileged_user_name }}"
+    mode: "0700"
+
+- name: Add authorized key for unprivileged user
+  ansible.builtin.copy:
+    content: "{{ puppeteers_users_unprivileged_user_ssh_authorized_key }}\n"
+    dest: "{{ puppeteers_users_unprivileged_user_home }}/.ssh/authorized_keys"
+    owner: "{{ puppeteers_users_unprivileged_user_name }}"
+    group: "{{ puppeteers_users_unprivileged_user_name }}"
+    mode: "0600"
+  when: puppeteers_users_unprivileged_user_ssh_authorized_key | length > 0
+
+- name: Enable systemd unit lingering for unprivileged user
+  ansible.builtin.command:
+    cmd: "loginctl enable-linger {{ puppeteers_users_unprivileged_user_name }}"
