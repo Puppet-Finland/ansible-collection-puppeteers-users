@@ -1,0 +1,3 @@
+puppeteers_users_unprivileged_user_state: present
+puppeteers_users_unprivileged_user_ssh_authorized_key: ""
+puppeteers_users_unprivileged_user_comment: "Unprivileged user created by Ansible role puppeteers.users.unprivileged_user"

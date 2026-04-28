@@ -62,3 +62,16 @@ To override the default admin group (e.g. sudo or wheel) use:
 ```
 puppeteers_users_localusers_admingroup: admin
 ```
+
+### puppeteers.users.unprivileged_user
+
+This role creates an unprivileged user. It is mainly intended to be used for
+unprivileged system users, e.g. for running Podman-based workloads without root
+privileges. Two parameters are mandatory:
+
+* **puppeteers_users_unprivileged_user_name**: name of the user
+* **puppeteers_users_unprivileged_user_home**: home directory for the user
+
+If you intend to use the user for running Podman, it is highly recommended to allow access via SSH. This requires defining an SSH public key:
+
+* **puppeteers_users_unprivileged_user_ssh_authorized_key**: SSH public key with which access allowed as the user
